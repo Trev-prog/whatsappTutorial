@@ -1,0 +1,40 @@
+<ion-view title="{{ chat.data.name }}"> <!-- chat (ChatCtrl) has a data function which grabs a chat from Chats MongoDB, the .name grabs that chats name -->
+  <ion-nav-buttons side="right">
+    <button class="button button-clear"><img class="header-picture" ng-src="{{ chat.data.picture }}"></button>
+  </ion-nav-buttons>
+  <ion-content class="chat" delegate-handle="chatScroll"> <!-- we have a css class called chat that we use, and then we use an ionic delegate-handle which allows us to scroll and is defined in chat.controller.js-->
+    <div class="message-list"> <!-- use a css defined message-list -->
+      <div ng-repeat="message in chat.messages" class="message-wrapper"> <!-- iterate through all the messages in the chat (chat.messages refers to the ChatsCtrl as chat in routes.js, which then uses the .messages helper defined in the ChatsCtrl exported class, which then grabs the messages based on the chatID), calling each message as 'message' and use the css defined class 'message-wrapper' -->
+                <div class="message" ng-class="message.userId === $root.currentUser._id ? 'message-mine' : 'message-other'">
+ <!-- for every even message, call the class message-mine and for the odd ones, call it message-other (note that this is problematic for two messages in a row by the same person) -->
+          <div class="message-text">{{ message.text }}</div>
+          <span class="message-timestamp">{{ message.timestamp | amDateFormat: 'HH:mm' }}</span>
+          <!-- add the message text and timestamp and call the format from the angular-moment package -->
+        </div>
+      </div>
+    </div>
+  </ion-content>
+  <ion-footer-bar keyboard-attach class="bar-stable footer-chat item-input-inset"> <!-- The footer bar will be where we input stuff into the chat -->
+    <button class="button button-clear button-icon button-positive icon ion-ios-upload-outline"></button> <!-- Button class for the send button on the left -->
+
+    <label class="item-input-wrapper">
+      <input ng-model="chat.message"
+            dir="auto"
+            type="text"
+            on-return="chat.sendMessage(); chat.closeKeyboard()"
+            on-focus="chat.inputUp()"
+            on-blur="chat.inputDown"/>
+            <!-- input ng-model takes in input, assigns it the name chat.message, or type text, and when you click enter, it runs the ChatsCtrll sendMessage function and closeKeyboard function
+
+            if on iOS, the same happens but using the inputUp and inputDown functions -->
+    </label>
+    <span ng-if="chat.message.length > 0">
+      <button ng-click="chat.sendMessage()" class="button button-clear button-positive">Send</button> <!-- whenever you type in a message, the Send button appears -->
+    </span>
+    <span ng-if="!chat.message || chat.message.length === 0">
+      <button class="button button-clear button-icon button-positive icon ion-ios-camera-outline"></button>
+      <i class="buttons-seperator icon ion-android-more-vertical"></i>
+      <button class="button button-clear button-icon button-positive icon ion-ios-mic-outline"></button>
+    </span> <!-- when you don't have a message typed in, not send button appears, but instead a camera and mic are visible -->
+  </ion-footer-bar>
+</ion-view>

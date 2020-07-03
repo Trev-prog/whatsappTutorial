@@ -1,0 +1,24 @@
+<ion-view view-title="Chats">
+  <ion-content>
+    <ion-list>
+<!-- The ngRepeat directive instantiates a template once per item from a collection. Each template instance gets its own scope, where the given loop variable is set to the current collection item, and $index is set to the item index or key.
+-->
+
+<!-- chat is the element pulled from chats.data where chats is ChatCtrol as defined in routes.js -->
+      <ion-item ng-repeat="chat in chats.data | orderBy:'-lastMessage.timestamp'"
+                class="item-chat item-remove-animate item-avatar item-icon-right"
+                type="item-text-wrap"
+                href="#tab/chats/{{ chat._id }}">
+        <!-- Each item pulls from various css classes such as animate.css, has a type (item-text-wrap indicates a multiline text that should wrap when it is too long to fit on one line in the item.), and a href to the route defined by the url tab/chats/chat_id -->
+        <img ng-src="{{ chat.picture }}"> <!-- img ng-src is the way to pull an image with ionic -->
+        <h2>{{ chat.name }} {{ chats.getTitle.title }}</h2> <!-- pull the chat name, ADDED -->
+        <p>{{ chat.lastMessage.text }}</p> <!-- get the last chat message -->
+        <span class="last-message-timestamp">{{ chat.lastMessage.timestamp | calendar }}</span> <!-- we pass in chat.lastMessage.timestamp to the function calendar in calendar.filter.js and use the last-message-timestamp from the chats.scss file -->
+        <i class="icon ion-chevron-right icon-accessory"></i> <!-- put a chevron at the end -->
+        <ion-option-button class="button-assertive" ng-click="chats.remove(chat)">
+          Delete
+        </ion-option-button> <!-- the option button appears when you swipe left to delete the chat by calling the chats.remove function from ChatsCtrl.js -->
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

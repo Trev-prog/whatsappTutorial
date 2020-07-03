@@ -1,0 +1,28 @@
+<ion-view title="{{ confirmation.phone }}">
+  <ion-nav-buttons side="right">
+    <button ng-click="confirmation.confirm()" ng-disabled="!confirmation.code || confirmation.code.length === 0" class="button button-clear button-positive">Done</button> 
+  </ion-nav-buttons>
+ 
+ <!-- The ngClick directive allows you to specify custom behavior when an  element is clicked. 
+    aka call confirmation.confirm() when the button is clicked
+  -->
+  <ion-content>
+    <div class="text-center padding">
+      We have sent you an SMS with a code to the number above
+    </div>
+    <div class="text-center padding">
+      To complete your phone number verification WhatsApp, please enter the 4-digit activation code.
+    </div>
+ 
+    <div class="list padding-top">
+      <label class="item item-input">
+        <input ng-model="confirmation.code" on-return="confirmation.confirm()" type="text" placeholder="Code"> <!-- The ngModel directive binds an input,select, textarea (or custom form control) to a property on the scope using NgModelController, which is created and exposed by this directive.
+        aka whatever is typed into the item-input class is bound to confirmation.code via ngModel directive
+        Note that upon hitting enter, the confirmation.confirm is run-->
+      </label>
+    </div>
+    <div class="text-center padding">
+      Please hit enter after typing in your 4 digit code.
+    </div>
+  </ion-content>
+</ion-view>
